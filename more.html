@@ -1,0 +1,1634 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Eksplorasi & Komunitas - Perpustakaan Skaweb</title>
+    <link rel="icon" href="book.svg" type="image/png">
+    <style>
+        :root {
+            --nav-blue: #143d99;
+            --nav-blue-dark: #0e3084;
+            --brand-blue: #1d4ed8;
+            --brand-light: #eff6ff;
+            --text-main: #0f172a;
+            --muted: #64748b;
+            --card-bg: #ffffff;
+            --bg: #f8fafc;
+            --border: #e2e8f0;
+            --accent-green: #10b981;
+            --accent-purple: #8b5cf6;
+            --accent-amber: #f59e0b;
+        }
+        * { box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Inter, -apple-system, BlinkMacSystemFont, Arial, sans-serif;
+            margin: 0;
+            background: var(--bg);
+            color: var(--text-main);
+            line-height: 1.6;
+        }
+
+        /* ===== NAVBAR BIRU ELEGAN (1 LOGO, TEKS BERSIH TANPA EMOJI) ===== */
+        .navbar {
+            background: linear-gradient(135deg, #0e3084 0%, #143d99 55%, #1c4bb7 100%);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 28px;
+            box-shadow: 0 4px 16px rgba(14, 48, 132, 0.22);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 700;
+            font-size: 18px;
+            color: #ffffff;
+            text-decoration: none;
+            letter-spacing: -0.2px;
+        }
+        .brand img {
+            width: 38px;
+            height: 38px;
+            object-fit: cover;
+            border-radius: 8px;
+            border: 2px solid rgba(255, 255, 255, 0.4);
+            background: #ffffff;
+            display: block;
+        }
+        .nav-links {
+            display: flex;
+            gap: 6px;
+            align-items: center;
+        }
+        .nav-links a, .nav-item-btn {
+            color: #f1f5f9;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 14px;
+            padding: 8px 14px;
+            border-radius: 8px;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .nav-links a:hover, .nav-item-btn:hover {
+            color: #ffffff;
+            background: rgba(255, 255, 255, 0.18);
+        }
+        .nav-links a.active {
+            color: #ffffff;
+            background: rgba(255, 255, 255, 0.25);
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+        }
+        .nav-btn-logout {
+            background: rgba(239, 68, 68, 0.2);
+            color: #fee2e2 !important;
+            border: 1px solid rgba(239, 68, 68, 0.4);
+            margin-left: 6px;
+        }
+        .nav-btn-logout:hover {
+            background: #ef4444 !important;
+            color: #ffffff !important;
+        }
+
+        /* Dropdown Tutorials */
+        .dropdown { position: relative; display: inline-block; }
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: #ffffff;
+            min-width: 210px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+            border-radius: 10px;
+            padding: 6px 0;
+            z-index: 1001;
+            border: 1px solid #e2e8f0;
+            margin-top: 4px;
+        }
+        .dropdown:hover .dropdown-menu { display: block; }
+        .dropdown-menu a {
+            color: #1e293b !important;
+            padding: 10px 16px;
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+        }
+        .dropdown-menu a:hover {
+            background: #f1f5f9 !important;
+            color: var(--brand-blue) !important;
+        }
+        .dropdown-divider {
+            height: 1px;
+            background: #e2e8f0;
+            margin: 4px 0;
+        }
+
+        /* ===== HERO BANNER CORAK BATIK ELEGAN ===== */
+        .batik-hero-banner {
+            position: relative;
+            background-color: #0e3084;
+            background-image: 
+                linear-gradient(135deg, rgba(12, 38, 108, 0.88) 0%, rgba(20, 60, 160, 0.80) 50%, rgba(12, 38, 108, 0.90) 100%),
+                url("batik_banner.webp");
+            background-size: auto, 340px;
+            background-repeat: no-repeat, repeat;
+            background-position: center, center;
+            color: #ffffff;
+            padding: 50px 24px 44px 24px;
+            box-shadow: inset 0 -2px 14px rgba(0, 0, 0, 0.2);
+        }
+        .banner-inner {
+            max-width: 1040px;
+            margin: 0 auto;
+            text-align: center;
+        }
+        .banner-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(255, 255, 255, 0.18);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.35);
+            color: #ffffff;
+            font-size: 13px;
+            font-weight: 600;
+            padding: 6px 16px;
+            border-radius: 20px;
+            margin-bottom: 14px;
+        }
+        .banner-title {
+            font-size: 32px;
+            font-weight: 800;
+            margin: 0 0 10px 0;
+            color: #ffffff;
+            letter-spacing: -0.5px;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+        }
+        .banner-subtitle {
+            font-size: 15px;
+            color: #e0edff;
+            max-width: 720px;
+            margin: 0 auto 24px auto;
+            line-height: 1.6;
+        }
+        .banner-nav-tabs {
+            display: inline-flex;
+            gap: 8px;
+            background: rgba(255, 255, 255, 0.12);
+            padding: 6px;
+            border-radius: 40px;
+            backdrop-filter: blur(6px);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .tab-btn {
+            background: transparent;
+            border: none;
+            color: #ffffff;
+            font-weight: 700;
+            font-size: 14px;
+            padding: 10px 20px;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .tab-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+        .tab-btn.active {
+            background: #ffffff;
+            color: #0e3084;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        /* ===== MAIN CONTAINER ===== */
+        .container {
+            max-width: 1120px;
+            margin: 32px auto 60px auto;
+            padding: 0 20px;
+        }
+
+        /* ===== DETAIL BUKU SECTION (JIKA ?id=...) ===== */
+        .book-detail-wrapper {
+            background: #ffffff;
+            border-radius: 16px;
+            padding: 32px;
+            box-shadow: 0 6px 24px rgba(15, 23, 42, 0.08);
+            border: 1px solid var(--border);
+            margin-bottom: 40px;
+            display: none;
+        }
+        .book-detail-grid {
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            gap: 32px;
+            align-items: start;
+        }
+        .book-cover {
+            width: 100%;
+            max-height: 380px;
+            object-fit: contain;
+            border-radius: 12px;
+            background: #f8fafc;
+            padding: 16px;
+            border: 1px solid var(--border);
+        }
+        .book-title {
+            font-size: 28px;
+            font-weight: 800;
+            margin: 0 0 8px 0;
+            color: #0f172a;
+        }
+        .book-meta {
+            color: var(--muted);
+            font-size: 14px;
+            margin-bottom: 16px;
+        }
+        .book-desc {
+            font-size: 15px;
+            line-height: 1.7;
+            color: #334155;
+            margin-bottom: 20px;
+        }
+        pre.content-box {
+            white-space: pre-wrap;
+            background: #f8fafc;
+            padding: 18px;
+            border-radius: 10px;
+            border: 1px solid var(--border);
+            font-family: inherit;
+            font-size: 14px;
+            color: #1e293b;
+            line-height: 1.6;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        .book-actions {
+            display: flex;
+            gap: 12px;
+            margin-top: 24px;
+            flex-wrap: wrap;
+        }
+        .btn-action {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 10px 20px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 14px;
+            transition: all 0.2s;
+            cursor: pointer;
+            border: none;
+        }
+        .btn-primary { background: var(--nav-blue); color: #ffffff; }
+        .btn-primary:hover { background: #0c2668; }
+        .btn-secondary { background: #e2e8f0; color: #1e293b; }
+        .btn-secondary:hover { background: #cbd5e1; }
+        .btn-success { background: #059669; color: #ffffff; }
+        .btn-success:hover { background: #047857; }
+
+        /* ===== TAB CONTENT STYLES ===== */
+        .tab-pane {
+            display: none;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+        .tab-pane.active {
+            display: block;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .section-header {
+            margin-bottom: 24px;
+        }
+        .section-header h2 {
+            font-size: 26px;
+            font-weight: 800;
+            color: #0f172a;
+            margin: 0 0 8px 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .section-header p {
+            color: var(--muted);
+            margin: 0;
+            font-size: 15px;
+        }
+
+        /* Filter Pills */
+        .filter-bar {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+        .filter-pill {
+            background: #ffffff;
+            border: 1px solid var(--border);
+            color: #475569;
+            padding: 7px 16px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .filter-pill:hover {
+            border-color: var(--brand-blue);
+            color: var(--brand-blue);
+        }
+        .filter-pill.active {
+            background: var(--nav-blue);
+            border-color: var(--nav-blue);
+            color: #ffffff;
+        }
+
+        /* Card Grid Layout */
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 24px;
+            margin-bottom: 40px;
+        }
+        .card-item {
+            background: #ffffff;
+            border-radius: 14px;
+            border: 1px solid var(--border);
+            padding: 24px;
+            box-shadow: 0 4px 14px rgba(15, 23, 42, 0.04);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .card-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 24px rgba(15, 23, 42, 0.09);
+            border-color: #cbd5e1;
+        }
+        .card-badge-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+        .badge {
+            font-size: 11px;
+            font-weight: 700;
+            padding: 4px 10px;
+            border-radius: 6px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .badge-blue { background: #dbeafe; color: #1e40af; }
+        .badge-green { background: #dcfce7; color: #166534; }
+        .badge-purple { background: #f3e8ff; color: #6b21a8; }
+        .badge-amber { background: #fef3c7; color: #92400e; }
+        .badge-rose { background: #ffe4e6; color: #9f1239; }
+
+        .card-title {
+            font-size: 19px;
+            font-weight: 700;
+            margin: 0 0 10px 0;
+            color: #0f172a;
+            line-height: 1.35;
+        }
+        .card-desc {
+            font-size: 14px;
+            color: #475569;
+            line-height: 1.6;
+            margin: 0 0 16px 0;
+            flex-grow: 1;
+        }
+        .card-highlights {
+            background: #f8fafc;
+            border-radius: 8px;
+            padding: 10px 14px;
+            margin-bottom: 16px;
+            font-size: 13px;
+            color: #334155;
+            border: 1px solid #f1f5f9;
+        }
+        .card-highlights div {
+            margin-bottom: 4px;
+        }
+        .card-highlights div:last-child {
+            margin-bottom: 0;
+        }
+        .card-footer {
+            margin-top: auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .card-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: var(--nav-blue);
+            color: #ffffff;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 13px;
+            padding: 9px 16px;
+            border-radius: 8px;
+            transition: background 0.2s;
+            width: 100%;
+            justify-content: center;
+        }
+        .card-btn:hover {
+            background: #0d276b;
+        }
+
+        /* ===== ROADMAP & TIPS ACCORDION / BOX ===== */
+        .info-panel-box {
+            background: linear-gradient(135deg, #f0f7ff 0%, #ffffff 100%);
+            border: 1px solid #bfdbfe;
+            border-radius: 14px;
+            padding: 24px;
+            margin-bottom: 36px;
+        }
+        .info-panel-box h3 {
+            font-size: 18px;
+            font-weight: 700;
+            color: #1e3a8a;
+            margin: 0 0 10px 0;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .roadmap-steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 16px;
+            margin-top: 16px;
+        }
+        .step-item {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 16px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+        }
+        .step-number {
+            display: inline-block;
+            background: var(--nav-blue);
+            color: #ffffff;
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 26px;
+            font-weight: 700;
+            font-size: 12px;
+            margin-bottom: 8px;
+        }
+        .step-title {
+            font-size: 15px;
+            font-weight: 700;
+            color: #0f172a;
+            margin-bottom: 4px;
+        }
+        .step-desc {
+            font-size: 13px;
+            color: var(--muted);
+            line-height: 1.5;
+        }
+
+        /* ===== INTERACTIVE COMMUNITY FORUM BOX ===== */
+        .forum-interactive-box {
+            background: #ffffff;
+            border-radius: 14px;
+            border: 1px solid var(--border);
+            padding: 24px;
+            margin-top: 36px;
+            box-shadow: 0 4px 14px rgba(15, 23, 42, 0.04);
+        }
+        .forum-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 20px;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 16px;
+        }
+        .forum-header h3 {
+            margin: 0;
+            font-size: 20px;
+            font-weight: 800;
+            color: #0f172a;
+        }
+        .question-list {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+        .question-card {
+            background: #f8fafc;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 16px;
+            transition: all 0.2s;
+        }
+        .question-card:hover {
+            border-color: #cbd5e1;
+            background: #ffffff;
+        }
+        .q-meta {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 12px;
+            color: var(--muted);
+            margin-bottom: 6px;
+        }
+        .q-tag {
+            background: #e2e8f0;
+            color: #334155;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-weight: 600;
+        }
+        .q-title {
+            font-size: 15px;
+            font-weight: 700;
+            color: #0f172a;
+            margin-bottom: 6px;
+        }
+        .q-text {
+            font-size: 13.5px;
+            color: #475569;
+            margin: 0;
+        }
+        .ask-form {
+            background: #f8fafc;
+            border: 1px solid #cbd5e1;
+            border-radius: 10px;
+            padding: 18px;
+            margin-top: 20px;
+        }
+        .form-row {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 12px;
+            flex-wrap: wrap;
+        }
+        .form-input {
+            padding: 10px 14px;
+            border-radius: 8px;
+            border: 1px solid #cbd5e1;
+            font-size: 14px;
+            font-family: inherit;
+            flex: 1;
+            min-width: 200px;
+        }
+        .form-input:focus {
+            outline: none;
+            border-color: var(--nav-blue);
+            box-shadow: 0 0 0 3px rgba(20, 61, 153, 0.15);
+        }
+        .form-textarea {
+            width: 100%;
+            padding: 10px 14px;
+            border-radius: 8px;
+            border: 1px solid #cbd5e1;
+            font-size: 14px;
+            font-family: inherit;
+            resize: vertical;
+            min-height: 80px;
+            margin-bottom: 12px;
+        }
+        .form-textarea:focus {
+            outline: none;
+            border-color: var(--nav-blue);
+            box-shadow: 0 0 0 3px rgba(20, 61, 153, 0.15);
+        }
+
+        /* ===== FOOTER ===== */
+        .footer {
+            background: #ffffff;
+            border-top: 1px solid var(--border);
+            text-align: center;
+            padding: 24px;
+            color: var(--muted);
+            font-size: 13px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .navbar { padding: 12px 16px; }
+            .nav-links { gap: 2px; }
+            .nav-links a, .nav-item-btn { padding: 6px 8px; font-size: 13px; }
+            .banner-title { font-size: 24px; }
+            .book-detail-grid { grid-template-columns: 1fr; }
+            .cards-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+    <script>
+        (function(){
+            try{
+                if(!sessionStorage.getItem('currentUser')){
+                    window.location.href = 'login.html';
+                }
+            }catch(e){
+                window.location.href = 'login.html';
+            }
+        })();
+    </script>
+</head>
+<body>
+
+    <!-- NAVBAR BIRU ELEGAN (1 LOGO, TEKS BERSIH TANPA EMOJI) -->
+    <nav class="navbar">
+        <a class="brand" href="index.html">
+            <img src="book.svg" alt="">
+            <span>Perpustakaan Skaweb</span>
+        </a>
+        <div class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="index.html#books">Buku</a>
+            
+            <div class="dropdown">
+                <a href="tutorials.html" class="nav-item-btn">
+                    Tutorials
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+                </a>
+                <div class="dropdown-menu">
+                    <a href="tutorials.html?topic=html">HTML</a>
+                    <a href="tutorials.html?topic=css">CSS</a>
+                    <a href="tutorials.html?topic=js">JavaScript (JS)</a>
+                    <div class="dropdown-divider"></div>
+                    <a href="tutorials.html?topic=python">Python</a>
+                    <a href="tutorials.html?topic=mysql">MySQL</a>
+                    <a href="tutorials.html">Semua Tutorial</a>
+                </div>
+            </div>
+
+            <a href="more.html" class="active">More</a>
+            <a href="about.html">About</a>
+            <a href="login.html" class="nav-btn-logout">Keluar</a>
+        </div>
+    </nav>
+
+    <!-- HERO BANNER CORAK BATIK DENGAN NAVIGASI TAB UTAMA -->
+    <section class="batik-hero-banner">
+        <div class="banner-inner">
+            <div class="banner-badge">
+                Eksplorasi & Ruang Kolaborasi
+            </div>
+            <h1 class="banner-title">Pusat Informasi & Komunitas Digital</h1>
+            <p class="banner-subtitle">
+                Temukan komunitas diskusi ramah pemula, rekomendasi kursus pemrograman terkini, serta agenda kompetisi teknologi nasional maupun internasional.
+            </p>
+            
+            <!-- TOMBOL PILIH MENU TAB UTAMA -->
+            <div class="banner-nav-tabs">
+                <button class="tab-btn active" onclick="switchTab('community')" id="tabBtn-community">
+                    Komunitas Belajar
+                </button>
+                <button class="tab-btn" onclick="switchTab('kursus')" id="tabBtn-kursus">
+                    Info Kursus & Rekomendasi
+                </button>
+                <button class="tab-btn" onclick="switchTab('lomba')" id="tabBtn-lomba">
+                    Info Lomba Nasional & Internasional
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- MAIN CONTAINER -->
+    <main class="container">
+
+        <!-- TAMPILAN DETAIL BUKU (HANYA AKTIF JIKA ADA PARAMETER ?id=...) -->
+        <section id="bookDetailWrapper" class="book-detail-wrapper">
+            <div id="bookDetailContent">
+                <p>Memuat rincian buku...</p>
+            </div>
+        </section>
+
+        <!-- ========================================================================= -->
+        <!-- TAB 1: COMMUNITY (KOMUNITAS BERDISKUSI / TEMPAT BELAJAR PEMULA)            -->
+        <!-- ========================================================================= -->
+        <section id="tab-community" class="tab-pane active">
+            <div class="section-header">
+                <h2>Komunitas Diskusi & Tempat Belajar Pemula</h2>
+                <p>Ruang ramah untuk bertanya seputar error kode, berdiskusi solusi teknis, berbagi portofolio, dan belajar bareng dari nol bersama rekan seperjuangan.</p>
+            </div>
+
+            <!-- Filter Kategori Komunitas -->
+            <div class="filter-bar">
+                <button class="filter-pill active" onclick="filterCommunity('all', this)">Semua Komunitas</button>
+                <button class="filter-pill" onclick="filterCommunity('discord', this)">Discord Server</button>
+                <button class="filter-pill" onclick="filterCommunity('telegram', this)">Telegram & WhatsApp</button>
+                <button class="filter-pill" onclick="filterCommunity('forum', this)">Forum Web & Tanya Jawab</button>
+            </div>
+
+            <!-- Grid Kartu Komunitas -->
+            <div class="cards-grid" id="communityGrid">
+                
+                <!-- Card 1: WPU Discord -->
+                <div class="card-item" data-category="discord">
+                    <div>
+                        <div class="card-badge-row">
+                            <span class="badge badge-purple">Discord Server</span>
+                            <span class="badge badge-green">Ramah Pemula</span>
+                        </div>
+                        <h3 class="card-title">Discord Web Programming UNPAS (WPU)</h3>
+                        <p class="card-desc">
+                            Komunitas belajar coding terbesar dan paling aktif di Indonesia yang dibimbing oleh Pak Sandhika Galih. Sangat ramah bagi yang baru mulai belajar HTML, CSS, JavaScript, hingga PHP dan Laravel.
+                        </p>
+                        <div class="card-highlights">
+                            <div><strong>Channel Utama:</strong> #tanya-error, #web-dev, #showcase-karya</div>
+                            <div><strong>Komunitas:</strong> 55.000+ Pengembang & Pelajar</div>
+                            <div><strong>Aktivitas:</strong> Sesi tanya jawab aktif, voice room belajar bareng</div>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <a href="https://discord.gg/wpu" target="_blank" rel="noopener noreferrer" class="card-btn">
+                            Gabung Discord WPU &rarr;
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Card 2: FreeCodeCamp Indonesia -->
+                <div class="card-item" data-category="telegram forum">
+                    <div>
+                        <div class="card-badge-row">
+                            <span class="badge badge-blue">Telegram & Forum</span>
+                            <span class="badge badge-green">Belajar Terstruktur</span>
+                        </div>
+                        <h3 class="card-title">FreeCodeCamp Indonesia</h3>
+                        <p class="card-desc">
+                            Grup belajar terbuka bagi mereka yang menempuh kurikulum gratis FreeCodeCamp. Diskusi pemecahan algoritma JS, layouting CSS responsif, dan tips persiapan portofolio kerja.
+                        </p>
+                        <div class="card-highlights">
+                            <div><strong>Fokus:</strong> Frontend Web, Algoritma JS, Proyek Nyata</div>
+                            <div><strong>Format:</strong> Grup Telegram diskusi santai & Forum Global</div>
+                            <div><strong>Bahasa:</strong> Indonesia & Inggris ramah pemula</div>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <a href="https://t.me/freecodecampindonesia" target="_blank" rel="noopener noreferrer" class="card-btn">
+                            Kunjungi Grup Telegram &rarr;
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Card 3: Python ID -->
+                <div class="card-item" data-category="telegram">
+                    <div>
+                        <div class="card-badge-row">
+                            <span class="badge badge-amber">Telegram Group</span>
+                            <span class="badge badge-blue">Python & Data</span>
+                        </div>
+                        <h3 class="card-title">Python ID (Komunitas Python Indonesia)</h3>
+                        <p class="card-desc">
+                            Wadah berkumpulnya pencinta bahasa Python di tanah air. Mulai dari dasar sintaks, otomasi tugas harian, web scraping, pengolahan data, hingga machine learning dan Django.
+                        </p>
+                        <div class="card-highlights">
+                            <div><strong>Topik:</strong> Python Dasar, Flask, FastAPI, Data Science</div>
+                            <div><strong>Anggota:</strong> 22.000+ Developer & Pelajar</div>
+                            <div><strong>Agenda:</strong> Tanya jawab error, sharing materi bulanan</div>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <a href="https://t.me/pythonid" target="_blank" rel="noopener noreferrer" class="card-btn">
+                            Gabung Python ID &rarr;
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Card 4: Programmer Zaman Now -->
+                <div class="card-item" data-category="telegram discord">
+                    <div>
+                        <div class="card-badge-row">
+                            <span class="badge badge-purple">Telegram & Discord</span>
+                            <span class="badge badge-amber">Backend & Database</span>
+                        </div>
+                        <h3 class="card-title">Programmer Zaman Now (PZN Community)</h3>
+                        <p class="card-desc">
+                            Komunitas yang diasuh oleh Kang Eko Kurniawan Khannedy. Sangat direkomendasikan bagi pemula yang ingin melangkah memahami backend, database relasional (MySQL/PostgreSQL), arsitektur microservices, Go, dan Java.
+                        </p>
+                        <div class="card-highlights">
+                            <div><strong>Topik:</strong> Database, Backend API, DevOps Dasar, Clean Code</div>
+                            <div><strong>Kelebihan:</strong> Jawaban teknis mendalam dan berstandar industri</div>
+                            <div><strong>Karakter:</strong> Konstruktif, profesional, terarah</div>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <a href="https://t.me/ProgrammerZamanNow" target="_blank" rel="noopener noreferrer" class="card-btn">
+                            Gabung Grup PZN &rarr;
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Card 5: Dev.to & Hashnode Global -->
+                <div class="card-item" data-category="forum">
+                    <div>
+                        <div class="card-badge-row">
+                            <span class="badge badge-rose">Forum Web</span>
+                            <span class="badge badge-blue">Global Knowledge</span>
+                        </div>
+                        <h3 class="card-title">Dev.to & Hashnode Community</h3>
+                        <p class="card-desc">
+                            Platform blogging dan diskusi teknologi global paling ramah bagi developer pemula. Ratusan programmer membagikan catatan belajar harian (#beginners), tips debugging, dan tanya jawab ramah.
+                        </p>
+                        <div class="card-highlights">
+                            <div><strong>Kategori Favorit:</strong> #beginners, #webdev, #javascript, #career</div>
+                            <div><strong>Keunggulan:</strong> Tidak ada pertanyaan yang dianggap konyol</div>
+                            <div><strong>Akses:</strong> Gratis tanpa akun berbayar</div>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <a href="https://dev.to" target="_blank" rel="noopener noreferrer" class="card-btn">
+                            Jelajahi Artikel & Tanya Jawab Dev.to &rarr;
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Card 6: Stack Overflow & GitHub Discussions -->
+                <div class="card-item" data-category="forum">
+                    <div>
+                        <div class="card-badge-row">
+                            <span class="badge badge-amber">Q&A Solusi Error</span>
+                            <span class="badge badge-green">Pusat Jawaban Dunia</span>
+                        </div>
+                        <h3 class="card-title">Stack Overflow & GitHub Discussions</h3>
+                        <p class="card-desc">
+                            Platform tanya jawab teknis terpenting di dunia. Ketika kamu menemui pesan galat atau bug membingungkan di terminal/console browser, solusi terindeks hampir pasti ada di sini.
+                        </p>
+                        <div class="card-highlights">
+                            <div><strong>Fungsi:</strong> Mencari solusi error spesifik lewat Google / Search</div>
+                            <div><strong>Tips:</strong> Ketik pesan error exact di kolom pencarian</div>
+                            <div><strong>Cakupan:</strong> Semua bahasa pemrograman tanpa terkecuali</div>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <a href="https://stackoverflow.com" target="_blank" rel="noopener noreferrer" class="card-btn">
+                            Kunjungi Stack Overflow &rarr;
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- SIMULASI POJOK DISKUSI PEMULA (INTERAKTIF & EDUKATIF) -->
+            <div class="forum-interactive-box">
+                <div class="forum-header">
+                    <div>
+                        <h3>Pojok Diskusi Pemula (Tanya Jawab Belajar)</h3>
+                        <p style="margin:4px 0 0 0;font-size:14px;color:var(--muted);">Simulasi ruang tanya jawab interaktif perpustakaan. Ajukan pertanyaan pemula atau pelajari topik diskusi yang sedang dibahas.</p>
+                    </div>
+                    <span class="badge badge-green">Diskusi Terbuka</span>
+                </div>
+
+                <!-- Daftar Pertanyaan Aktif -->
+                <div class="question-list" id="communityQuestions">
+                    <div class="question-card">
+                        <div class="q-meta">
+                            <span class="q-tag">HTML & CSS</span>
+                            <span>Ditanyakan oleh <strong>Rian (Pemula)</strong> • 2 jam yang lalu</span>
+                        </div>
+                        <div class="q-title">Bagaimana cara paling mudah meratakan elemen ke tengah dengan Flexbox?</div>
+                        <p class="q-text">Cukup berikan properti pada container: <code>display: flex; justify-content: center; align-items: center;</code>. Elemen di dalamnya akan otomatis berada tepat di tengah horizontal dan vertikal.</p>
+                    </div>
+
+                    <div class="question-card">
+                        <div class="q-meta">
+                            <span class="q-tag">JavaScript</span>
+                            <span>Ditanyakan oleh <strong>Nadia (Pelajar)</strong> • 1 hari yang lalu</span>
+                        </div>
+                        <div class="q-title">Kapan sebaiknya menggunakan `const` dibanding `let` dalam mendeklarasikan variabel?</div>
+                        <p class="q-text">Gunakan <code>const</code> sebagai pilihan utama untuk nilai yang referensinya tidak berubah. Gunakan <code>let</code> hanya jika nilai variabel tersebut memang perlu di-reassign (misalnya dalam counter perulangan for loop).</p>
+                    </div>
+
+                    <div class="question-card">
+                        <div class="q-meta">
+                            <span class="q-tag">Tools & Belajar</span>
+                            <span>Ditanyakan oleh <strong>Dimas</strong> • 2 hari yang lalu</span>
+                        </div>
+                        <div class="q-title">Apakah pemula wajib belajar Git dan GitHub sejak awal?</div>
+                        <p class="q-text">Sangat dianjurkan! Dengan Git, kamu tidak takut kode rusak karena ada riwayat perubahan (commit), dan GitHub menjadi portofolio resmi saat melamar magang atau kerja.</p>
+                    </div>
+                </div>
+
+                <!-- Form Tambah Pertanyaan Interaktif -->
+                <div class="ask-form">
+                    <h4 style="margin:0 0 12px 0;color:#0f172a;font-size:16px;">Tulis Pertanyaan atau Catatan Belajarmu:</h4>
+                    <form onsubmit="handlePostQuestion(event)">
+                        <div class="form-row">
+                            <input type="text" id="askName" class="form-input" placeholder="Nama Anda (contoh: Budi)" required>
+                            <select id="askTag" class="form-input" style="flex:0.6;" required>
+                                <option value="HTML & CSS">HTML & CSS</option>
+                                <option value="JavaScript">JavaScript</option>
+                                <option value="Python">Python</option>
+                                <option value="Database">Database / SQL</option>
+                                <option value="Tips Belajar">Tips Belajar Umum</option>
+                            </select>
+                        </div>
+                        <input type="text" id="askTitle" class="form-input" style="width:100%;margin-bottom:12px;" placeholder="Judul Pertanyaan (contoh: Mengapa gambar di HTML tidak muncul?)" required>
+                        <textarea id="askDetail" class="form-textarea" placeholder="Tuliskan detail pertanyaan, kode yang sudah dicoba, atau apa yang ingin kamu pelajari..." required></textarea>
+                        <button type="submit" class="btn-action btn-primary">
+                            Kirim Pertanyaan ke Forum
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- PANDUAN TATA KRAMA BERTANYA -->
+            <div class="info-panel-box" style="margin-top:32px;">
+                <h3>Panduan Bertanya Kode yang Efektif untuk Pemula</h3>
+                <p style="font-size:14px;color:#334155;margin-bottom:12px;">Agar pertanyaanmu cepat dijawab oleh rekan komunitas, selalu sertakan 3 hal ini:</p>
+                <div style="font-size:13.5px;color:#334155;line-height:1.7;">
+                    <div>1. <strong>Tujuan yang ingin dicapai:</strong> Jelaskan apa yang seharusnya dilakukan oleh program kamu.</div>
+                    <div>2. <strong>Potongan kode minimal:</strong> Jangan kirim ratusan baris, cukup sertakan bagian fungsi atau tag yang bermasalah.</div>
+                    <div>3. <strong>Pesan error dari Console:</strong> Buka Inspect Element (tekan F12 &rarr; tab Console) lalu copy teks error merah yang muncul.</div>
+                </div>
+            </div>
+
+        </section>
+
+        <!-- ========================================================================= -->
+        <!-- TAB 2: INFO KURSUS (WEB TERBARU KURSUS TERSEDIA & REKOMENDASI)             -->
+        <!-- ========================================================================= -->
+        <section id="tab-kursus" class="tab-pane">
+            <div class="section-header">
+                <h2>Informasi & Rekomendasi Kursus Pemrograman</h2>
+                <p>Katalog platform kursus daring terkini untuk memandu langkah belajarmu dari nol hingga siap berkarier, lengkap dengan kurikulum terstruktur dan beasiswa aktif.</p>
+            </div>
+
+            <!-- Roadmap Rekomendasi Alur Belajar Pemula -->
+            <div class="info-panel-box">
+                <h3>Rekomendasi Roadmap Belajar Mandiri (Pemula ke Mahir)</h3>
+                <p style="font-size:14px;color:#334155;margin:0;">
+                    Bingung harus mulai dari mana? Ikuti alur 4 tahap pondasi berikut secara bertahap agar belajarmu terstruktur dan tidak mudah kewalahan.
+                </p>
+                <div class="roadmap-steps">
+                    <div class="step-item">
+                        <span class="step-number">1</span>
+                        <div class="step-title">Pondasi Web Dasar</div>
+                        <div class="step-desc">Pelajari HTML5 untuk kerangka halaman dan CSS3 (Flexbox/Grid) untuk mempercantik tata letak visual.</div>
+                    </div>
+                    <div class="step-item">
+                        <span class="step-number">2</span>
+                        <div class="step-title">Logika Interaktif</div>
+                        <div class="step-desc">Kuasai JavaScript DOM untuk membuat website dinamis dan memahami konsep pemrosesan data (array, object, fungsi).</div>
+                    </div>
+                    <div class="step-item">
+                        <span class="step-number">3</span>
+                        <div class="step-title">Tools & Kolaborasi</div>
+                        <div class="step-desc">Gunakan Git dan GitHub untuk menyimpan portofolio proyek serta membiasakan diri dengan alur kerja tim developer.</div>
+                    </div>
+                    <div class="step-item">
+                        <span class="step-number">4</span>
+                        <div class="step-title">Framework & Backend</div>
+                        <div class="step-desc">Lanjutkan ke salah satu spesialisasi: Frontend (React/Vue), Backend (Node.js/Laravel/Python), atau Database SQL.</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Filter Kategori Kursus -->
+            <div class="filter-bar">
+                <button class="filter-pill active" onclick="filterCourses('all', this)">Semua Platform</button>
+                <button class="filter-pill" onclick="filterCourses('gratis', this)">100% Gratis</button>
+                <button class="filter-pill" onclick="filterCourses('sertifikat', this)">Bersertifikat Resmi</button>
+                <button class="filter-pill" onclick="filterCourses('beasiswa', this)">Ada Program Beasiswa</button>
+                <button class="filter-pill" onclick="filterCourses('global', this)">Internasional / Global</button>
+            </div>
+
+            <!-- Grid Kartu Kursus -->
+            <div class="cards-grid" id="coursesGrid">
+
+                <!-- Kursus 1: Dicoding Indonesia -->
+                <div class="card-item" data-type="sertifikat beasiswa">
+                    <div>
+                        <div class="card-badge-row">
+                            <span class="badge badge-blue">Platform Indonesia</span>
+                            <span class="badge badge-green">Review Kode Manual</span>
+                        </div>
+                        <h3 class="card-title">Dicoding Indonesia (Academy & Beasiswa)</h3>
+                        <p class="card-desc">
+                            Platform pelatihan teknologi nomor satu di Indonesia yang kurikulumnya disusun bersama Google, AWS, dan Microsoft. Setiap tugas proyek akhir di-review manual oleh reviewer profesional.
+                        </p>
+                        <div class="card-highlights">
+                            <div><strong>Jalur Belajar:</strong> Front-End Web, Android, Machine Learning, Cloud</div>
+                            <div><strong>Beasiswa Rutin:</strong> IDCamp, DBS Foundation Coding Camp, Baparekraf</div>
+                            <div><strong>Level:</strong> Dasar, Pemula, Menengah hingga Mahir</div>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <a href="https://www.dicoding.com" target="_blank" rel="noopener noreferrer" class="card-btn">
+                            Kunjungi Dicoding Indonesia &rarr;
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Kursus 2: FreeCodeCamp -->
+                <div class="card-item" data-type="gratis sertifikat global">
+                    <div>
+                        <div class="card-badge-row">
+                            <span class="badge badge-green">100% Gratis Selamanya</span>
+                            <span class="badge badge-purple">Sertifikat Gratis</span>
+                        </div>
+                        <h3 class="card-title">FreeCodeCamp.org</h3>
+                        <p class="card-desc">
+                            Organisasi nirlaba global yang menyediakan kurikulum pemrograman lengkap secara gratis. Pengguna langsung menulis dan menguji kode di peramban (browser) dengan ratusan latihan praktis.
+                        </p>
+                        <div class="card-highlights">
+                            <div><strong>Kurikulum:</strong> Responsive Web Design, JS Algorithms, Front End Libraries</div>
+                            <div><strong>Durasi:</strong> ~300 jam per sertifikasi dengan 5 proyek mandiri</div>
+                            <div><strong>Biaya:</strong> Bebas biaya 100% tanpa langganan</div>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <a href="https://www.freecodecamp.org" target="_blank" rel="noopener noreferrer" class="card-btn">
+                            Mulai Belajar di FreeCodeCamp &rarr;
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Kursus 3: Harvard CS50x -->
+                <div class="card-item" data-type="gratis global">
+                    <div>
+                        <div class="card-badge-row">
+                            <span class="badge badge-rose">Harvard University</span>
+                            <span class="badge badge-blue">Audit Gratis</span>
+                        </div>
+                        <h3 class="card-title">Harvard CS50x (edX)</h3>
+                        <p class="card-desc">
+                            Kursus pengantar ilmu komputer paling legendaris di dunia yang dibawakan oleh Prof. David J. Malan. Sangat cocok bagi yang ingin memahami cara komputer berpikir, algoritma, bahasa C, Python, dan SQL.
+                        </p>
+                        <div class="card-highlights">
+                            <div><strong>Materi:</strong> C, Python, SQL, Struktur Data, Algoritma, Web</div>
+                            <div><strong>Kualitas:</strong> Standar kuliah universitas Ivy League terbaik dunia</div>
+                            <div><strong>Akses:</strong> Gratis diaudit sepenuhnya di platform edX</div>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <a href="https://cs50.harvard.edu/x" target="_blank" rel="noopener noreferrer" class="card-btn">
+                            Buka Materi CS50x Harvard &rarr;
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Kursus 4: Google Career Certificates (Coursera) -->
+                <div class="card-item" data-type="sertifikat beasiswa global">
+                    <div>
+                        <div class="card-badge-row">
+                            <span class="badge badge-blue">Google Certificate</span>
+                            <span class="badge badge-green">Financial Aid 100%</span>
+                        </div>
+                        <h3 class="card-title">Google Career Certificates (Coursera)</h3>
+                        <p class="card-desc">
+                            Program sertifikasi kerja profesional resmi yang dirancang langsung oleh para ahli Google. Tersedia program bantuan finansial (Financial Aid) sehingga kamu bisa belajar gratis hingga memperoleh sertifikat resmi.
+                        </p>
+                        <div class="card-highlights">
+                            <div><strong>Spesialisasi:</strong> IT Support, Python Automation, Data Analytics, UX Design</div>
+                            <div><strong>Kredibilitas:</strong> Diakui oleh perusahaan teknologi multinasional</div>
+                            <div><strong>Level:</strong> Ramah pemula tanpa syarat latar belakang IT</div>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <a href="https://www.coursera.org" target="_blank" rel="noopener noreferrer" class="card-btn">
+                            Lihat Kursus di Coursera &rarr;
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Kursus 5: The Odin Project -->
+                <div class="card-item" data-type="gratis global">
+                    <div>
+                        <div class="card-badge-row">
+                            <span class="badge badge-green">100% Gratis</span>
+                            <span class="badge badge-amber">Open Source</span>
+                        </div>
+                        <h3 class="card-title">The Odin Project (Full Stack Open)</h3>
+                        <p class="card-desc">
+                            Kurikulum web development terbuka yang mengajarkan cara kerja developer sesungguhnya. Kamu akan diajarkan menginstal environment coding di laptop sendiri, memakai terminal Linux/Git, dan menyusun proyek nyata.
+                        </p>
+                        <div class="card-highlights">
+                            <div><strong>Jalur:</strong> Foundations &rarr; Full Stack JavaScript / Ruby on Rails</div>
+                            <div><strong>Fokus:</strong> Kemandirian problem solving & portofolio Git</div>
+                            <div><strong>Komunitas:</strong> Komunitas Discord internasional yang sangat suportif</div>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <a href="https://www.theodinproject.com" target="_blank" rel="noopener noreferrer" class="card-btn">
+                            Jelajahi The Odin Project &rarr;
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Kursus 6: WPU Playlist Academy -->
+                <div class="card-item" data-type="gratis">
+                    <div>
+                        <div class="card-badge-row">
+                            <span class="badge badge-purple">YouTube Academy</span>
+                            <span class="badge badge-green">100% Gratis</span>
+                        </div>
+                        <h3 class="card-title">Web Programming UNPAS (YouTube Playlist)</h3>
+                        <p class="card-desc">
+                            Ribuan video penjelasan materi pemrograman dari nol hingga mahir dengan bahasa Indonesia yang santai, terstruktur rapi, dan mudah dicerna. Sudah terintegrasi langsung di menu Tutorials perpustakaan ini!
+                        </p>
+                        <div class="card-highlights">
+                            <div><strong>Materi Terpopuler:</strong> HTML Dasar, CSS Layouting, JavaScript Modern, Laravel</div>
+                            <div><strong>Format:</strong> Playlist berurutan dari video 1 hingga selesai</div>
+                            <div><strong>Akses Cepat:</strong> Terintegrasi di menu Tutorials website ini</div>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <a href="tutorials.html" class="card-btn">
+                            Buka Menu Tutorials Perpustakaan &rarr;
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- KOTAK REKOMENDASI PILIHAN KURSUS -->
+            <div class="info-panel-box">
+                <h3>Rekomendasi Spesifik Berdasarkan Kebutuhan Anda:</h3>
+                <div style="font-size:14px;color:#334155;line-height:1.8;">
+                    <div>• <strong>Mau belajar buat website sendiri secepat mungkin?</strong> Mulai dari seri <em>Web Programming UNPAS (Tutorials)</em> + latihan praktik di <em>FreeCodeCamp</em>.</div>
+                    <div>• <strong>Mau sertifikat kredibel untuk melamar magang di Indonesia?</strong> Ambil kelas dasar di <em>Dicoding Indonesia</em> dan pantau program beasiswa seperti IDCamp atau DBS.</div>
+                    <div>• <strong>Mau memahami dasar-dasar ilmu komputer dan logika coding secara mendalam?</strong> Luangkan waktu menyimak <em>Harvard CS50x</em>.</div>
+                </div>
+            </div>
+
+        </section>
+
+        <!-- ========================================================================= -->
+        <!-- TAB 3: INFO LOMBA (KOMPETISI TEKNOLOGI NASIONAL & INTERNASIONAL)          -->
+        <!-- ========================================================================= -->
+        <section id="tab-lomba" class="tab-pane">
+            <div class="section-header">
+                <h2>Informasi Lomba & Kompetisi Teknologi</h2>
+                <p>Daftar kompetisi teknologi, hackathon, competitive programming, dan UI/UX design bergengsi di Indonesia maupun kancah internasional untuk mengasah mental juara dan membangun portofolio unggulan.</p>
+            </div>
+
+            <!-- Filter Kategori Lomba -->
+            <div class="filter-bar">
+                <button class="filter-pill active" onclick="filterCompetitions('all', this)">Semua Lomba</button>
+                <button class="filter-pill" onclick="filterCompetitions('nasional', this)">Nasional (Indonesia)</button>
+                <button class="filter-pill" onclick="filterCompetitions('internasional', this)">Internasional</button>
+                <button class="filter-pill" onclick="filterCompetitions('mahasiswa', this)">Mahasiswa & Pelajar</button>
+                <button class="filter-pill" onclick="filterCompetitions('hackathon', this)">Hackathon & Terbuka</button>
+            </div>
+
+            <!-- Grid Kartu Lomba -->
+            <div class="cards-grid" id="competitionsGrid">
+
+                <!-- Lomba 1: GEMASTIK -->
+                <div class="card-item" data-scope="nasional mahasiswa">
+                    <div>
+                        <div class="card-badge-row">
+                            <span class="badge badge-rose">Nasional (Indonesia)</span>
+                            <span class="badge badge-purple">Kemendikbudristek</span>
+                        </div>
+                        <h3 class="card-title">GEMASTIK (Pagelaran Mahasiswa Nasional TIK)</h3>
+                        <p class="card-desc">
+                            Ajang kompetisi teknologi informasi dan komunikasi paling bergengsi tingkat perguruan tinggi di Indonesia yang diselenggarakan oleh Balai Pengembangan Talenta Indonesia (BPTI).
+                        </p>
+                        <div class="card-highlights">
+                            <div><strong>Divisi Lomba:</strong> Pemrograman, Desain UX, Software Development, Data Mining, Smart City, Keamanan Siber</div>
+                            <div><strong>Peserta:</strong> Mahasiswa aktif D3/D4/S1 di seluruh Indonesia</div>
+                            <div><strong>Periode Rutin:</strong> Mei - Oktober / November (Setiap Tahun)</div>
+                            <div><strong>Penghargaan:</strong> Medali BPTI, Piala Samakbya Padmakencana, Rekognisi Prestasi</div>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <a href="https://bpti.kemdikbud.go.id" target="_blank" rel="noopener noreferrer" class="card-btn">
+                            Informasi Resmi GEMASTIK (BPTI) &rarr;
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Lomba 2: Google Solution Challenge -->
+                <div class="card-item" data-scope="internasional mahasiswa">
+                    <div>
+                        <div class="card-badge-row">
+                            <span class="badge badge-blue">Internasional</span>
+                            <span class="badge badge-green">Google Developers</span>
+                        </div>
+                        <h3 class="card-title">Google Solution Challenge</h3>
+                        <p class="card-desc">
+                            Kompetisi tahunan global yang menantang mahasiswa untuk membangun solusi perangkat lunak menggunakan satu atau lebih teknologi Google demi menjawab 17 Sasaran Pembangunan Berkelanjutan PBB (UN SDGs).
+                        </p>
+                        <div class="card-highlights">
+                            <div><strong>Fokus Teknologi:</strong> Flutter, Firebase, Google Cloud, TensorFlow, Web</div>
+                            <div><strong>Peserta:</strong> Mahasiswa seluruh dunia (anggota GDSC / terbuka)</div>
+                            <div><strong>Periode Rutin:</strong> Pendaftaran Januari - Maret, Final Mei</div>
+                            <div><strong>Hadiah:</strong> Mentorship insinyur Google, demo global, hadiah ribuan USD</div>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <a href="https://developers.google.com/community/gdsc-solution-challenge" target="_blank" rel="noopener noreferrer" class="card-btn">
+                            Kunjungi Google Solution Challenge &rarr;
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Lomba 3: Microsoft Imagine Cup -->
+                <div class="card-item" data-scope="internasional mahasiswa">
+                    <div>
+                        <div class="card-badge-row">
+                            <span class="badge badge-purple">Internasional</span>
+                            <span class="badge badge-blue">Microsoft Corp</span>
+                        </div>
+                        <h3 class="card-title">Microsoft Imagine Cup (Global)</h3>
+                        <p class="card-desc">
+                            Sering dijuluki sebagai "Olimpiade Teknologi Pelajar Dunia". Ajang bagi inovator muda untuk membangun startup berbasis teknologi komputasi awan Microsoft Azure dan Artificial Intelligence.
+                        </p>
+                        <div class="card-highlights">
+                            <div><strong>Kategori:</strong> Inovasi AI, Health, Earth & Environment, Education</div>
+                            <div><strong>Peserta:</strong> Pelajar SMA/SMK dan Mahasiswa (Usia 16+ tahun)</div>
+                            <div><strong>Hadiah Utama:</strong> USD $100.000 + Sesi Mentoring langsung dengan Satya Nadella (CEO Microsoft)</div>
+                            <div><strong>Periode:</strong> Oktober - Mei (Tahunan)</div>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <a href="https://imaginecup.microsoft.com" target="_blank" rel="noopener noreferrer" class="card-btn">
+                            Lihat Kompetisi Imagine Cup &rarr;
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Lomba 4: ICPC & INC Indonesia -->
+                <div class="card-item" data-scope="nasional internasional mahasiswa">
+                    <div>
+                        <div class="card-badge-row">
+                            <span class="badge badge-amber">Nasional & Global</span>
+                            <span class="badge badge-rose">Competitive Programming</span>
+                        </div>
+                        <h3 class="card-title">ICPC & INC (Indonesia National Contest)</h3>
+                        <p class="card-desc">
+                            Kompetisi pemrograman algoritma tertua dan paling prestisius di dunia. Tim beranggotakan 3 orang berlomba menyelesaikan belasan soal algoritma dan struktur data rumit dalam waktu 5 jam dengan 1 komputer.
+                        </p>
+                        <div class="card-highlights">
+                            <div><strong>Tahapan:</strong> INC (Nasional) &rarr; Regional Asia Pasifik &rarr; World Finals</div>
+                            <div><strong>Bahasa:</strong> C++, Java, Python, Kotlin</div>
+                            <div><strong>Kelebihan:</strong> Finalis menjadi incaran utama perusahaan raksasa (Google, Meta, Apple)</div>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <a href="https://icpc.global" target="_blank" rel="noopener noreferrer" class="card-btn">
+                            Informasi Resmi ICPC Global &rarr;
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Lomba 5: COMPFEST & Arkavidia ITB -->
+                <div class="card-item" data-scope="nasional mahasiswa">
+                    <div>
+                        <div class="card-badge-row">
+                            <span class="badge badge-rose">Nasional (Indonesia)</span>
+                            <span class="badge badge-green">UI & ITB</span>
+                        </div>
+                        <h3 class="card-title">COMPFEST (UI) & Arkavidia (ITB)</h3>
+                        <p class="card-desc">
+                            Dua festival teknologi informasi mahasiswa terbesar di Indonesia yang diselenggarakan oleh Fasilkom UI dan STEI ITB. Menghadirkan cabang kompetisi yang sangat variatif untuk pelajar SMA/SMK dan mahasiswa.
+                        </p>
+                        <div class="card-highlights">
+                            <div><strong>Cabang:</strong> UI/UX Design Challenge, Software Engineering, Capture The Flag (CTF), Competitive Programming</div>
+                            <div><strong>Peserta:</strong> Pelajar SMA/SMK dan Mahasiswa seluruh Indonesia</div>
+                            <div><strong>Periode Rutin:</strong> Juni - Oktober (Setiap Tahun)</div>
+                            <div><strong>Hadiah:</strong> Total puluhan juta rupiah & piala bergengsi</div>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <a href="https://compfest.id" target="_blank" rel="noopener noreferrer" class="card-btn">
+                            Kunjungi Portal COMPFEST &rarr;
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Lomba 6: Hackathon Devpost Global -->
+                <div class="card-item" data-scope="hackathon internasional">
+                    <div>
+                        <div class="card-badge-row">
+                            <span class="badge badge-green">Online / Daring</span>
+                            <span class="badge badge-purple">Hackathon Global</span>
+                        </div>
+                        <h3 class="card-title">Devpost Global Hackathons</h3>
+                        <p class="card-desc">
+                            Platform direktori hackathon online terbesar di dunia. Setiap bulan terdapat puluhan hackathon daring berhadiah uang tunai yang diselenggarakan oleh perusahaan teknologi global, Web3 foundation, dan komunitas open-source.
+                        </p>
+                        <div class="card-highlights">
+                            <div><strong>Format:</strong> Sprint 24 - 48 jam membuat aplikasi fungsional (MVP)</div>
+                            <div><strong>Peserta:</strong> Terbuka untuk umum, pemula hingga profesional</div>
+                            <div><strong>Hadiah:</strong> Cash prize pool ribuan hingga puluhan ribu USD + merchandise</div>
+                            <div><strong>Jadwal:</strong> Berjalan setiap minggu sepanjang tahun</div>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <a href="https://devpost.com/hackathons" target="_blank" rel="noopener noreferrer" class="card-btn">
+                            Eksplorasi Hackathon di Devpost &rarr;
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- TIPS SUKSES MENGIKUTI LOMBA BAGI PEMULA -->
+            <div class="info-panel-box">
+                <h3>4 Tips Kunci Memulai dan Menjuarai Lomba IT bagi Pemula:</h3>
+                <div class="roadmap-steps">
+                    <div class="step-item">
+                        <span class="step-number">1</span>
+                        <div class="step-title">Mulai dari Kategori Desain UI/UX</div>
+                        <div class="step-desc">Jika kemampuan coding belum terlalu rumit, lomba Desain Pengalaman Pengguna (UI/UX) di Figma adalah pintu masuk terbaik untuk memahami riset pengguna dan meraih trofi pertama.</div>
+                    </div>
+                    <div class="step-item">
+                        <span class="step-number">2</span>
+                        <div class="step-title">Susun Tim Seimbang (3 Peran)</div>
+                        <div class="step-desc">Kombinasikan keahlian dalam tim: 1 orang Hacker (pengembang kode), 1 orang Hipster (desainer visual & prototipe), dan 1 orang Hustler (penyusun proposal & presentasi ide).</div>
+                    </div>
+                    <div class="step-item">
+                        <span class="step-number">3</span>
+                        <div class="step-title">Fokus pada Masalah Nyata</div>
+                        <div class="step-desc">Juri lebih menyukai solusi sederhana yang nyata-nyata menyelesaikan masalah masyarakat daripada aplikasi dengan teknologi rumit tapi tidak jelas siapa penggunanya.</div>
+                    </div>
+                    <div class="step-item">
+                        <span class="step-number">4</span>
+                        <div class="step-title">Buat Video Demo yang Menarik</div>
+                        <div class="step-desc">Sebagian besar babak penyisihan dinilai dari video berdurasi 2-3 menit. Tampilkan solusi secara jelas, tidak bertele-tele, dan perlihatkan antarmuka aplikasi yang responsif.</div>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+    </main>
+
+    <!-- FOOTER RESMI -->
+    <footer class="footer">
+        © 2025 Perpustakaan Skaweb. Seluruh hak cipta dilindungi.
+    </footer>
+
+    <!-- SCRIPT LOGIKA HALAMAN MORE.HTML -->
+    <script>
+        // --- 1. LOGIKA TAB SWITCHER ---
+        function switchTab(tabId) {
+            // Sembunyikan semua tab pane
+            const panes = document.querySelectorAll('.tab-pane');
+            panes.forEach(pane => pane.classList.remove('active'));
+
+            // Non-aktifkan semua tab button
+            const buttons = document.querySelectorAll('.tab-btn');
+            buttons.forEach(btn => btn.classList.remove('active'));
+
+            // Aktifkan tab yang dipilih
+            const targetPane = document.getElementById('tab-' + tabId);
+            const targetBtn = document.getElementById('tabBtn-' + tabId);
+            if (targetPane) targetPane.classList.add('active');
+            if (targetBtn) targetBtn.classList.add('active');
+
+            // Simpan posisi hash di URL tanpa reload
+            history.replaceState(null, null, '#' + tabId);
+        }
+
+        // --- 2. FILTER KOMUNITAS ---
+        function filterCommunity(category, buttonEl) {
+            const pills = buttonEl.parentElement.querySelectorAll('.filter-pill');
+            pills.forEach(p => p.classList.remove('active'));
+            buttonEl.classList.add('active');
+
+            const cards = document.querySelectorAll('#communityGrid .card-item');
+            cards.forEach(card => {
+                const cats = card.getAttribute('data-category') || '';
+                if (category === 'all' || cats.includes(category)) {
+                    card.style.display = 'flex';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+
+        // --- 3. FILTER KURSUS ---
+        function filterCourses(type, buttonEl) {
+            const pills = buttonEl.parentElement.querySelectorAll('.filter-pill');
+            pills.forEach(p => p.classList.remove('active'));
+            buttonEl.classList.add('active');
+
+            const cards = document.querySelectorAll('#coursesGrid .card-item');
+            cards.forEach(card => {
+                const types = card.getAttribute('data-type') || '';
+                if (type === 'all' || types.includes(type)) {
+                    card.style.display = 'flex';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+
+        // --- 4. FILTER LOMBA ---
+        function filterCompetitions(scope, buttonEl) {
+            const pills = buttonEl.parentElement.querySelectorAll('.filter-pill');
+            pills.forEach(p => p.classList.remove('active'));
+            buttonEl.classList.add('active');
+
+            const cards = document.querySelectorAll('#competitionsGrid .card-item');
+            cards.forEach(card => {
+                const scopes = card.getAttribute('data-scope') || '';
+                if (scope === 'all' || scopes.includes(scope)) {
+                    card.style.display = 'flex';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+
+        // --- 5. DISKUSI INTERAKTIF (LOCALSTORAGE) ---
+        function loadCustomQuestions() {
+            try {
+                const stored = localStorage.getItem('ocelot_community_questions');
+                if (!stored) return;
+                const questions = JSON.parse(stored);
+                const container = document.getElementById('communityQuestions');
+                questions.forEach(q => {
+                    const card = document.createElement('div');
+                    card.className = 'question-card';
+                    card.innerHTML = `
+                        <div class="q-meta">
+                            <span class="q-tag" style="background:#dbeafe;color:#1e40af;">${escapeHtml(q.tag)}</span>
+                            <span>Ditanyakan oleh <strong>${escapeHtml(q.name)}</strong> • Baru saja</span>
+                        </div>
+                        <div class="q-title">${escapeHtml(q.title)}</div>
+                        <p class="q-text">${escapeHtml(q.detail)}</p>
+                    `;
+                    container.prepend(card);
+                });
+            } catch (e) {
+                console.warn('Gagal membaca pertanyaan komunitas:', e);
+            }
+        }
+
+        function handlePostQuestion(e) {
+            e.preventDefault();
+            const name = document.getElementById('askName').value.trim();
+            const tag = document.getElementById('askTag').value;
+            const title = document.getElementById('askTitle').value.trim();
+            const detail = document.getElementById('askDetail').value.trim();
+
+            if (!name || !title || !detail) return;
+
+            const newQ = { name, tag, title, detail, time: new Date().toISOString() };
+
+            try {
+                let current = [];
+                const stored = localStorage.getItem('ocelot_community_questions');
+                if (stored) current = JSON.parse(stored);
+                current.unshift(newQ);
+                // Batasi maksimal 15 pertanyaan tersimpan
+                if (current.length > 15) current = current.slice(0, 15);
+                localStorage.setItem('ocelot_community_questions', JSON.stringify(current));
+            } catch (err) {
+                console.warn(err);
+            }
+
+            const container = document.getElementById('communityQuestions');
+            const card = document.createElement('div');
+            card.className = 'question-card';
+            card.style.borderColor = '#3b82f6';
+            card.innerHTML = `
+                <div class="q-meta">
+                    <span class="q-tag" style="background:#dbeafe;color:#1e40af;">${escapeHtml(tag)}</span>
+                    <span>Ditanyakan oleh <strong>${escapeHtml(name)}</strong> • Baru saja</span>
+                </div>
+                <div class="q-title">${escapeHtml(title)}</div>
+                <p class="q-text">${escapeHtml(detail)}</p>
+            `;
+            container.prepend(card);
+
+            // Reset form input
+            document.getElementById('askTitle').value = '';
+            document.getElementById('askDetail').value = '';
+            alert('Pertanyaanmu berhasil diposting ke forum diskusi!');
+        }
+
+        // --- 6. LOGIKA LOAD DETAIL BUKU JIKA ?id=... TERSEDIA ---
+        function getQueryParam(name) {
+            const params = new URLSearchParams(window.location.search);
+            return params.get(name);
+        }
+
+        function escapeHtml(str) {
+            return String(str).replace(/[&<>"']/g, function(s) {
+                return ({
+                    '&': '&amp;',
+                    '<': '&lt;',
+                    '>': '&gt;',
+                    '"': '&quot;',
+                    "'": '&#39;'
+                })[s];
+            });
+        }
+
+        async function checkBookParam() {
+            const id = getQueryParam('id');
+            const wrapper = document.getElementById('bookDetailWrapper');
+            const content = document.getElementById('bookDetailContent');
+
+            if (!id) {
+                wrapper.style.display = 'none';
+                return;
+            }
+
+            // Tampilkan wrapper detail buku
+            wrapper.style.display = 'block';
+
+            try {
+                const res = await fetch('books.json');
+                const list = await res.json();
+                const book = list.find(b => String(b.id) === String(id));
+
+                if (!book) {
+                    content.innerHTML = `
+                        <div style="text-align:center;padding:20px;">
+                            <p style="font-size:16px;color:#ef4444;font-weight:700;">Buku dengan ID tersebut tidak ditemukan.</p>
+                            <a class="btn-action btn-primary" href="index.html#books">&larr; Kembali ke Koleksi Buku</a>
+                        </div>
+                    `;
+                    return;
+                }
+
+                const coverSrc = book.cover || 'https://via.placeholder.com/600x400.png?text=Buku';
+                content.innerHTML = `
+                    <div style="margin-bottom:16px;">
+                        <span class="badge badge-blue">Detail Buku Terpilih</span>
+                    </div>
+                    <div class="book-detail-grid">
+                        <div>
+                            <img class="book-cover" src="${coverSrc}" alt="${escapeHtml(book.title)}">
+                        </div>
+                        <div>
+                            <h1 class="book-title">${escapeHtml(book.title)}</h1>
+                            <div class="book-meta">
+                                Penulis: <strong>${escapeHtml(book.author)}</strong> &nbsp;|&nbsp; 
+                                ISBN: <strong>${escapeHtml(book.isbn)}</strong> &nbsp;|&nbsp; 
+                                Kategori: <strong>${escapeHtml(book.tag)}</strong>
+                            </div>
+                            <p class="book-desc">${escapeHtml(book.description || 'Tidak ada deskripsi singkat.')}</p>
+                            
+                            <h4 style="margin:20px 0 8px 0;color:#0f172a;">Isi / Ringkasan Modul:</h4>
+                            <pre class="content-box">${escapeHtml(book.content || 'Tidak ada ringkasan materi.')}</pre>
+                            
+                            <div class="book-actions">
+                                <a class="btn-action btn-primary" href="index.html#books">&larr; Kembali ke Koleksi Buku</a>
+                                ${book.url ? `<a class="btn-action btn-success" href="${book.url}" target="_blank" rel="noopener noreferrer">Buka Sumber / Dokumen</a>` : ''}
+                                <button class="btn-action btn-secondary" onclick="window.scrollTo({top: document.getElementById('tab-community').offsetTop - 80, behavior: 'smooth'})">
+                                    Jelajahi Komunitas & Kursus &darr;
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            } catch (err) {
+                console.error(err);
+                content.innerHTML = `
+                    <div style="text-align:center;padding:20px;">
+                        <p style="font-size:16px;color:#ef4444;font-weight:700;">Gagal memuat data buku.</p>
+                        <a class="btn-action btn-primary" href="index.html#books">&larr; Kembali ke Beranda</a>
+                    </div>
+                `;
+            }
+        }
+
+        // Inisialisasi saat DOM siap
+        document.addEventListener('DOMContentLoaded', () => {
+            // Cek hash URL awal (#community, #kursus, #lomba)
+            const hash = window.location.hash.replace('#', '');
+            if (hash === 'community' || hash === 'kursus' || hash === 'lomba') {
+                switchTab(hash);
+            }
+
+            // Muat pertanyaan custom jika ada di local storage
+            loadCustomQuestions();
+
+            // Cek jika halaman dibuka dengan ?id=...
+            checkBookParam();
+        });
+    </script>
+</body>
+</html>
