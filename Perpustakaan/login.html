@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="icon" type="image/png" href="book.svg">
+
+    <style>
+        /* Layout: center page vertically & horizontally */
+        html,
+        body {
+            height: 100%;
+            margin: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Inter, Arial, sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #0e3084;
+            background-image:
+                linear-gradient(135deg, rgba(12, 38, 108, 0.86) 0%, rgba(20, 60, 160, 0.8) 100%),
+                url("batik_banner.webp");
+            background-size: auto, 340px;
+            background-repeat: no-repeat, repeat;
+            background-position: center, center;
+            color: #0f172a;
+        }
+
+        /* Card container */
+        .container {
+            width: 100%;
+            max-width: 420px;
+            padding: 20px;
+        }
+
+        .card {
+            background: #ffffff;
+            padding: 32px 28px;
+            border-radius: 16px;
+            box-shadow: 0 16px 36px rgba(0, 0, 0, 0.25);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        h2 {
+            color: #0f172a;
+            margin: 0 0 6px 0;
+            font-size: 22px;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+        }
+
+        h4 {
+            margin: 0 0 20px 0;
+            color: #64748b;
+            font-weight: 500;
+            font-size: 14px;
+        }
+
+        .title-logo {
+            width: 32px;
+            height: 32px;
+            vertical-align: middle;
+            margin-right: 10px;
+            object-fit: cover;
+            border-radius: 6px;
+        }
+
+        form {
+            margin-top: 8px;
+        }
+
+        label {
+            font-weight: 700;
+            font-size: 13px;
+            color: #334155;
+            display: block;
+            margin-top: 10px;
+        }
+
+        input[type="text"],
+        input[type="password"] {
+            width: 100%;
+            padding: 11px 13px;
+            margin: 6px 0 12px 0;
+            box-sizing: border-box;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            font-size: 14px;
+            background: #f8fafc;
+            color: #0f172a;
+            transition: all 0.2s;
+        }
+
+        input[type="text"]:focus,
+        input[type="password"]:focus {
+            outline: none;
+            border-color: #1d4ed8;
+            background: #ffffff;
+            box-shadow: 0 0 0 3px rgba(29, 78, 216, 0.15);
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #10348a 0%, #163f9e 100%);
+            color: white;
+            border: 0;
+            padding: 12px 16px;
+            border-radius: 8px;
+            font-weight: 700;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 14px;
+            font-size: 15px;
+            box-shadow: 0 4px 12px rgba(16, 52, 138, 0.25);
+            transition: all 0.2s;
+        }
+
+        .btn:hover {
+            background: linear-gradient(135deg, #0d2a70 0%, #10348a 100%);
+            transform: translateY(-1px);
+        }
+
+        .message {
+            margin-top: 12px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .message.error {
+            color: #ef4444
+        }
+
+        .message.success {
+            color: #059669
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <div class="container">
+        <div class="card">
+            <h2><img class="title-logo" src="book.svg" alt="logo">Login</h2>
+            <h4>Masuk untuk melihat</h4>
+
+            <form id="loginForm" onsubmit="handleLogin(event)">
+                <label for="username">Username</label>
+                <input id="username" type="text" placeholder="email atau username" autocomplete="username">
+
+                <label for="password">Password</label>
+                <input id="password" type="password" placeholder="password" autocomplete="current-password">
+
+                <button class="btn" type="submit">Masuk</button>
+                <div id="message" class="message" role="status" aria-live="polite"></div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        (function () {
+            // CONFIG: allowed users (username only). For stronger protection, replace password strings
+            // below with SHA-256 hashes (use the helper to generate hashes), then remove plaintext passwords.
+            const allowedUsers = [
+                { username: 'cok@gmail.com', password: 'cok' }
+            ];
+
+            // Security params
+            const MAX_FAILED = 5; // lock after 5 failed attempts
+            const LOCK_MS = 5 * 60 * 1000; // 5 minutes lock
+
+            // store computed password hashes in-memory
+            const passwordHashMap = new Map();
+
+            // helper: SHA-256 hex
+            async function sha256Hex(text) {
+                const enc = new TextEncoder();
+                const data = enc.encode(text);
+                const hash = await crypto.subtle.digest('SHA-256', data);
+                const arr = Array.from(new Uint8Array(hash));
+                return arr.map(b => b.toString(16).padStart(2, '0')).join('');
+            }
+
+            // prepare hash map (pre-compute hashes for configured passwords)
+            (async function prepare() {
+                for (const u of allowedUsers) {
+                    if (u.password) {
+                        try {
+                            const h = await sha256Hex(u.password);
+                            passwordHashMap.set(u.username, h);
+                        } catch (e) {
+                            console.error('Hash error', e);
+                        }
+                    }
+                }
+            })();
+
+            // rate limit helpers stored in localStorage so lock persists across reloads
+            function getFailedRecord(username) {
+                try {
+                    const raw = localStorage.getItem('login_failed_' + username);
+                    return raw ? JSON.parse(raw) : { count: 0, lockUntil: 0 };
+                } catch (e) {
+                    return { count: 0, lockUntil: 0 };
+                }
+            }
+            function setFailedRecord(username, record) {
+                localStorage.setItem('login_failed_' + username, JSON.stringify(record));
+            }
+
+            // show message
+            function showMessage(element, text, type) {
+                element.textContent = text;
+                element.className = 'message ' + type;
+            }
+
+            // handle login
+            async function handleLogin(event) {
+                event.preventDefault();
+                const username = document.getElementById('username').value.trim();
+                const password = document.getElementById('password').value;
+                const messageEl = document.getElementById('message');
+
+                if (!username || !password) {
+                    showMessage(messageEl, 'Masukkan username dan password.', 'error');
+                    return;
+                }
+
+                // check lock
+                const rec = getFailedRecord(username);
+                const now = Date.now();
+                if (rec.lockUntil && now < rec.lockUntil) {
+                    const secs = Math.ceil((rec.lockUntil - now) / 1000);
+                    showMessage(messageEl, `Akun terkunci. Coba lagi dalam ${secs} detik.`, 'error');
+                    return;
+                }
+
+                // compute hash of provided password
+                let inputHash;
+                try {
+                    inputHash = await sha256Hex(password);
+                } catch (e) {
+                    console.error(e);
+                    showMessage(messageEl, 'Terjadi kesalahan hashing.', 'error');
+                    return;
+                }
+
+                // get stored hash (if we precomputed it)
+                const storedHash = passwordHashMap.get(username);
+
+                if (storedHash && inputHash === storedHash) {
+                    // success
+                    showMessage(messageEl, 'Login berhasil! Selamat datang ' + username, 'success');
+                    // use sessionStorage instead of localStorage for session
+                    sessionStorage.setItem('currentUser', username);
+                    // reset failed record
+                    setFailedRecord(username, { count: 0, lockUntil: 0 });
+                    setTimeout(() => window.location.href = 'index.html', 1200);
+                    return;
+                }
+
+                // If no precomputed hash (user not found) or mismatch
+                // increment failed attempts
+                rec.count = (rec.count || 0) + 1;
+                if (rec.count >= MAX_FAILED) {
+                    rec.lockUntil = Date.now() + LOCK_MS;
+                    showMessage(messageEl, 'Terlalu banyak percobaan. Akun dikunci sementara.', 'error');
+                } else {
+                    showMessage(messageEl, 'Username atau password salah!', 'error');
+                }
+                setFailedRecord(username, rec);
+                document.getElementById('loginForm').reset();
+            }
+
+            // attach handler
+            window.handleLogin = handleLogin;
+
+            // expose helper to generate password hash (for admin use)
+            window.generatePasswordHash = async function (pw) {
+                return await sha256Hex(pw);
+            };
+        })();
+    </script>
+
+</body>
+
+</html>
